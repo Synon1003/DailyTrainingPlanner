@@ -1,0 +1,68 @@
+@implements IDisposable
+@inject TrainingService TrainingService
+
+<div class="date-selector">
+    @foreach(var date in _dates)
+    {
+        <div class="date-item @(date.IsSelected ? "selected" : "")"
+            @onclick="() => TrainingService.SelectDateAsync(date.Date)">
+            <div class="day">@date.Date.ToString("dd")</div>
+            <div class="weekday">@date.Date.ToString("ddd")</div>
+        </div>
+    }
+</div>
+
+<div class="selected-date">
+    <input type="date" 
+           class="date-picker" 
+           @bind="_selectedDate"
+           @bind:after="HandleSelectDateFromDatePicker" />
+</div>
+
+
+@code {
+    private List<DateModel> _dates = [];
+    private DateTime _selectedDate = DateTime.Now.Date.AddDays(0);
+
+
+    protected override void OnInitialized()
+    {
+        var currentDate = DateTime.Now.Date;
+        _selectedDate = currentDate;
+
+        _dates = Enumerable.Range(-2, 10).Select(num =>
+            new DateModel
+            {
+                Date = currentDate.AddDays(num),
+                IsSelected = num == 0
+            }).ToList();
+
+        TrainingService.SelectedDateChanged += HandleOutsideSelectedDateChanged;
+    }
+
+    private void HandleOutsideSelectedDateChanged()
+    {
+        _selectedDate = TrainingService.SelectedDate;
+        SetSelectedDateUI();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleSelectDateFromDatePicker()
+    {
+        await TrainingService.SelectDateAsync(_selectedDate);
+        SetSelectedDateUI();
+    }
+
+    private void SetSelectedDateUI()
+    {
+        foreach(var date in _dates)
+        {
+            date.IsSelected = date.Date == _selectedDate;
+        }
+    }
+
+    public void Dispose()
+    {
+        TrainingService.SelectedDateChanged -= HandleOutsideSelectedDateChanged;
+    }
+}

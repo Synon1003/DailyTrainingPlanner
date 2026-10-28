@@ -1,0 +1,39 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JsRuntime
+@inject TrainingService TrainingService
+
+@using DailyTrainingPlanner.Fragments
+
+<div class="page">
+    <TopBar OnNewTrainingButtonClick="AddNewTrainingAsync" />
+
+    <div class="page-content">
+        @Body
+    </div>
+
+    <FloatingActionButton OnFabClick="AddNewTrainingAsync" />
+</div>
+
+@code {
+    private async Task AddNewTrainingAsync()
+    {
+        var text = await JsRuntime.InvokeAsync<string?>("window.prompt", "Enter training text");
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            if (text is not null)
+            {
+                await JsRuntime.InvokeVoidAsync("window.alert", "Text is required");
+            }
+            return;
+        }
+
+        var newTraining = new TrainingModel()
+        {
+            Text = text,
+            ForDate = TrainingService.SelectedDate
+        };
+
+        await TrainingService.AddTrainingAsync(newTraining);
+    }
+}

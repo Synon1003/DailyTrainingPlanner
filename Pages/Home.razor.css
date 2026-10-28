@@ -1,0 +1,61 @@
+﻿.training-list {
+
+}
+
+.training-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    gap: 5px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.training-checkbox {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+}
+
+.training-checkbox input[type="checkbox"] {
+    cursor: pointer;
+    margin: 3px 3px 2px 3px ;
+}
+
+.training-text {
+    flex-grow: 1;
+}
+
+.training-text.done {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.training-actions {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.edit-btn, .delete-btn {
+    border: none;
+    background-color: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.edit-btn {
+    color: blue;
+}
+
+.delete-btn {
+    color: red;
+}
+
+.no-trainings {
+    width: 100%;
+    height: 400px;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    color: dimgray;
+}

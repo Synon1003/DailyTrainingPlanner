@@ -1,0 +1,6 @@
+.page {
+    min-height: calc(100dvh - var(--topbar-height));
+    width: 100%;
+    overflow: auto;
+    padding-top: var(--topbar-height);
+}

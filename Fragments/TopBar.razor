@@ -1,0 +1,9 @@
+<div class="topbar bg-primary flex justify-between items-center text-white">
+    <h2>Daily Training Planner</h2>
+    <button type="button" class="toolbar-btn" @onclick="OnNewTrainingButtonClick">+</button>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnNewTrainingButtonClick {get; set;}
+}

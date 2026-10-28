@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.razor": "${capture}.razor.cs, ${capture}.razor.css"
+    }
+}

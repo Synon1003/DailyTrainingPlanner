@@ -1,0 +1,53 @@
+.date-selector {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+}
+
+.date-item {
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 0.5px solid AntiqueWhite;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px
+}
+
+.date-item.selected {
+    background-color: #e1e1e1;
+}
+
+.day {
+    font-weight: bold;
+}
+
+.weekday {
+    font-size: 0.7rem;
+}
+
+.selected-date {
+    margin: 10px 0;
+}
+
+.date-picker {
+    height: 40px;
+    width: 95px;
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-primary);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85rem;
+    box-shadow: 0 0 10px LightGray;
+    padding: 0 10px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}

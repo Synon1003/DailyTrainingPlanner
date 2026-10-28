@@ -1,0 +1,98 @@
+﻿@page "/"
+@implements IDisposable
+@inject TrainingService TrainingService
+@inject IJSRuntime JsRuntime
+
+<PageTitle>Daily Training Planner</PageTitle>
+
+<DateSelector />
+
+<div class="training-list">
+    @if (_trainings.Any())
+    {
+        @foreach (var t in _trainings)
+        {
+            <div class="training-item">
+                <div class="training-checkbox">
+                    <input type="checkbox" @bind="t.IsDone" @bind:after="() => TrainingService.UpdateTrainingAsync(t)" />
+                </div>
+
+                <div class="training-text @(t.IsDone ? "done": "")">
+                    @t.Text
+                </div>
+                <div class="tasl-actions">
+                    <button type="button" class="edit-btn" @onclick="() => EditAsync(t)">Edit</button>
+                    <button type="button" class="delete-btn" @onclick="() => DeleteAsync(t)">Delete</button>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-trainings">
+            <p>There are no trainings for @TrainingService.SelectedDate.ToString("yyyy-MM-dd")</p>
+        </div>
+    }
+</div>
+
+@code {
+    private List<TrainingModel> _trainings = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TrainingService.InitializeAsync();
+        HandleSelectedDateChanged();
+        TrainingService.SelectedDateChanged += HandleSelectedDateChanged;
+        TrainingService.TrainingAdded += HandleNewTrainingAdded;
+    }
+
+    private void HandleSelectedDateChanged()
+    {
+        _trainings = TrainingService.GetTrainings();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleNewTrainingAdded(TrainingModel addedTraining)
+    {
+        if (addedTraining.ForDate == TrainingService.SelectedDate)
+        {
+            _trainings.Add(addedTraining);
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task EditAsync(TrainingModel training)
+    {
+        var text = await JsRuntime.InvokeAsync<string?>("window.prompt", "Enter text", training.Text);
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            if (text is not null)
+            {
+                await JsRuntime.InvokeVoidAsync("window.alert", "Text is required");
+            }
+            return;
+        }
+
+        var updatedTraining = training.Clone();
+        updatedTraining.Text = text;
+        await TrainingService.UpdateTrainingAsync(updatedTraining);
+
+        training.Text = text;
+    } 
+
+    private async Task DeleteAsync(TrainingModel training)
+    {
+        if (await JsRuntime.InvokeAsync<bool>("window.confirm", "are you sure to delete this training?"))
+        {
+            await TrainingService.DeleteTrainingAsync(training.Id);
+            _trainings.Remove(training);
+        }
+    } 
+
+    public void Dispose()
+    {
+        TrainingService.SelectedDateChanged -= HandleSelectedDateChanged;
+        TrainingService.TrainingAdded -= HandleNewTrainingAdded;
+    }
+}
