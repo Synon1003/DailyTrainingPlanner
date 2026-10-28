@@ -40,7 +40,7 @@
     border: none;
     background-color: none;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
 }
 
 .edit-btn {
@@ -48,7 +48,7 @@
 }
 
 .delete-btn {
-    color: red;
+    color: hotpink;
 }
 
 .no-trainings {

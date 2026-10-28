@@ -30,7 +30,7 @@
         var currentDate = DateTime.Now.Date;
         _selectedDate = currentDate;
 
-        _dates = Enumerable.Range(-2, 10).Select(num =>
+        _dates = Enumerable.Range(-2, 17).Select(num =>
             new DateModel
             {
                 Date = currentDate.AddDays(num),

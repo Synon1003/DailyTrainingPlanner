@@ -1,11 +1,11 @@
 {
-  "name": "DailyTrainingPlanner",
+  "name": "Daily Training Planner",
   "short_name": "DailyTrainingPlanner",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#512BD4",
+  "theme_color": "#00008B",
   "prefer_related_applications": false,
   "icons": [
     {

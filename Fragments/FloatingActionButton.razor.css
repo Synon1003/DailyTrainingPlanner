@@ -1,6 +1,6 @@
 .fab-btn {
     position: fixed;
-    left: calc(50% - 25px);
+    right: 20px;
     bottom: 20px;
     background-color: var(--color-primary);
     color: white;
